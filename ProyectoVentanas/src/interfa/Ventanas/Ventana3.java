@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 package interfa.Ventanas;
-import proyecto.Proyecto.*;
-import proyecto.Grafo.*;
-import proyecto.Adyacente.*;
-import proyecto.Arista.*;
-import proyecto.Lista.*;
-import proyecto.Nodo.*;
-import proyecto.Usuario.*;
+import java.io.File;
+import javax.swing.JOptionPane;
 
+import static proyecto.Proyecto.encontrar;
+import static proyecto.Proyecto.extraerGrafo;
+import static proyecto.Proyecto.guardarGrafo;
+import static proyecto.Proyecto.miGrafo;
 /**
  *
  * @author donat
  */
 public class Ventana3 extends javax.swing.JFrame {
+    public static File guardado_automatico = new File("src\\Archivos\\guardado_automatico.txt");
 
     /**
      * Creates new form Ventana3
@@ -41,14 +41,16 @@ public class Ventana3 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         idusuario = new javax.swing.JTextField();
         idamigo = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        buscaramigo = new javax.swing.JButton();
+        buscaruser = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        nombreamigo = new javax.swing.JLabel();
+        nombreuser = new javax.swing.JLabel();
+        crearamistad = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        añosamistad = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -94,59 +96,59 @@ public class Ventana3 extends javax.swing.JFrame {
         idamigo.setText("000");
         getContentPane().add(idamigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, 90, -1));
 
-        jButton2.setBackground(new java.awt.Color(51, 204, 0));
-        jButton2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Search");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.setName(""); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        buscaramigo.setBackground(new java.awt.Color(51, 204, 0));
+        buscaramigo.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
+        buscaramigo.setForeground(new java.awt.Color(0, 0, 0));
+        buscaramigo.setText("Search");
+        buscaramigo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buscaramigo.setName(""); // NOI18N
+        buscaramigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                buscaramigoActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, 70, -1));
+        getContentPane().add(buscaramigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, 70, -1));
 
-        jButton3.setBackground(new java.awt.Color(51, 204, 0));
-        jButton3.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Search");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.setName(""); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        buscaruser.setBackground(new java.awt.Color(51, 204, 0));
+        buscaruser.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
+        buscaruser.setForeground(new java.awt.Color(0, 0, 0));
+        buscaruser.setText("Search");
+        buscaruser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buscaruser.setName(""); // NOI18N
+        buscaruser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                buscaruserActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 70, -1));
+        getContentPane().add(buscaruser, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 70, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("ID Usuario:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 80, 20));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel4.setText("ID Amigo:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 80, 20));
+        jLabel4.setText("Años de amistad: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 120, 20));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setText("Nombre: ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 190, 20));
+        nombreamigo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        nombreamigo.setText("Nombre: ");
+        getContentPane().add(nombreamigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 210, 20));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel6.setText("Nombre: ");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, 190, 20));
+        nombreuser.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        nombreuser.setText("Nombre: ");
+        getContentPane().add(nombreuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, 210, 20));
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/añadirb.png"))); // NOI18N
-        jButton4.setBorderPainted(false);
-        jButton4.setContentAreaFilled(false);
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton4.setFocusable(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        crearamistad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/añadirb.png"))); // NOI18N
+        crearamistad.setBorderPainted(false);
+        crearamistad.setContentAreaFilled(false);
+        crearamistad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        crearamistad.setFocusable(false);
+        crearamistad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                crearamistadActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 260, -1, -1));
+        getContentPane().add(crearamistad, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 260, -1, -1));
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/limpiar.png"))); // NOI18N
         jButton6.setBorderPainted(false);
@@ -159,6 +161,13 @@ public class Ventana3 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("ID Amigo:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 80, 20));
+
+        añosamistad.setText("00");
+        getContentPane().add(añosamistad, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 210, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(0, 153, 153));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/8bitfondo3.png"))); // NOI18N
@@ -181,17 +190,25 @@ public class Ventana3 extends javax.swing.JFrame {
         v1.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void buscaramigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaramigoActionPerformed
+        nombreuser.setText("Nombre: " +encontrar(Integer.parseInt(idamigo.getText())));
+    }//GEN-LAST:event_buscaramigoActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void buscaruserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaruserActionPerformed
+        nombreamigo.setText("Nombre: " +encontrar(Integer.parseInt(idusuario.getText())));
+    }//GEN-LAST:event_buscaruserActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void crearamistadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearamistadActionPerformed
+        guardarGrafo(miGrafo, guardado_automatico);
+        miGrafo = extraerGrafo(guardado_automatico);
+        try{            
+        miGrafo.insertarAristaValor(Integer.parseInt(idusuario.getText()), Integer.parseInt(idusuario.getText()), Integer.parseInt(añosamistad.getText()));
+        guardarGrafo(miGrafo, guardado_automatico);
+        miGrafo = extraerGrafo(guardado_automatico);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error, introduzca datos validos");
+        }
+    }//GEN-LAST:event_crearamistadActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         idamigo.setText("");
@@ -238,20 +255,22 @@ public class Ventana3 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField añosamistad;
+    private javax.swing.JButton buscaramigo;
+    private javax.swing.JButton buscaruser;
+    private javax.swing.JButton crearamistad;
     private javax.swing.JButton devolver;
     private javax.swing.JTextField idamigo;
     private javax.swing.JTextField idusuario;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel nombreamigo;
+    private javax.swing.JLabel nombreuser;
     // End of variables declaration//GEN-END:variables
 }

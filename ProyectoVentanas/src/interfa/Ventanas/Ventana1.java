@@ -8,6 +8,7 @@ package interfa.Ventanas;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import proyecto.Proyecto.*;
 import proyecto.Grafo.*;
 import proyecto.Adyacente.*;
@@ -16,6 +17,9 @@ import proyecto.Grafo;
 import proyecto.Lista.*;
 import proyecto.Nodo.*;
 import proyecto.Proyecto;
+import static proyecto.Proyecto.extraerGrafo;
+import static proyecto.Proyecto.guardarGrafo;
+import static proyecto.Proyecto.miGrafo;
 import proyecto.Usuario.*;
 
 /**
@@ -26,10 +30,16 @@ public class Ventana1 extends javax.swing.JFrame {
     public static int pasodialogo;
     public int aparicion;
     private static Grafo miGrafo;
+    public static File guardado_automatico = new File("src\\Archivos\\guardado_automatico.txt");
     /**
      * Creates new form Ventana1
      */
     public Ventana1(boolean sino) {
+        try{
+        miGrafo = extraerGrafo(guardado_automatico);
+    }catch(Exception e){
+            System.out.println("se puede");
+            }
 //        this.setLocationRelativeTo(null);
         this.setResizable(false);
         pasodialogo=+1;
@@ -67,6 +77,8 @@ public class Ventana1 extends javax.swing.JFrame {
         agregarUsuario1 = new javax.swing.JButton();
         AgregarDoc = new javax.swing.JButton();
         ListasPuentes = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        guardar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -179,6 +191,30 @@ public class Ventana1 extends javax.swing.JFrame {
         });
         getContentPane().add(ListasPuentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 190, 110));
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/exitbutton.png"))); // NOI18N
+        jButton1.setActionCommand("exitv1");
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setFocusable(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 400, -1, -1));
+
+        guardar.setBackground(new java.awt.Color(255, 0, 0));
+        guardar.setText("Guarde aqui");
+        guardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        guardar.setFocusable(false);
+        guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, -1, -1));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/persona8bit.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 450));
 
@@ -196,6 +232,9 @@ public class Ventana1 extends javax.swing.JFrame {
             AgregarDoc.setVisible(true);
         }else{   
             String parte2 = "Sientete libre";
+            if (rootPaneCheckingEnabled) {
+                
+            }
             dialogo.setText(parte2);
             agregarAmigo.setVisible(true);
             VerGrafo.setVisible(true);
@@ -217,12 +256,16 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_ListasPuentesActionPerformed
 
     private void agregarAmigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAmigoActionPerformed
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);
         dispose();
             Ventana3 v3 = new Ventana3();
             v3.setVisible(true);
     }//GEN-LAST:event_agregarAmigoActionPerformed
 
     private void eliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarUsuarioActionPerformed
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);
         dispose();
         Ventana2_2 v2_2 = new Ventana2_2();
         v2_2.Ventanatext("Eliminar Usuario",1);
@@ -231,23 +274,37 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarUsuarioActionPerformed
 
     private void agregarUsuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarUsuario1ActionPerformed
-            dispose();
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);    
+        dispose();
             Ventana2 v2 = new Ventana2();
             v2.setVisible(true);
     }//GEN-LAST:event_agregarUsuario1ActionPerformed
 
     private void AgregarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarDocActionPerformed
+        File guardado_automatico = new File("src\\Archivos\\guardado_automatico.txt");
         JFileChooser file=new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt");
+        file.setFileFilter(filter);
+        
         file.showOpenDialog(file);
-   
         File abre=file.getSelectedFile();
+        int result = file.getDialogType();
+        if (result == JFileChooser.APPROVE_OPTION) {
+        miGrafo = extraerGrafo(abre);
+        }else{
+             JOptionPane.showMessageDialog(null, "La carga de archivo se ha cancelado");
+             
+        }
         try{
           miGrafo = Proyecto.extraerGrafo(abre); 
+        guardarGrafo(miGrafo, guardado_automatico);
+          miGrafo = extraerGrafo(guardado_automatico);
           JOptionPane.showMessageDialog(null, miGrafo);
           pasodialogo += 1;
-            System.out.println("si?");
+          
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error, vuelve a insertar un archivo compatible");
+            JOptionPane.showMessageDialog(null, "Error\ninsertar un archivo compatible");
         }
         
         
@@ -260,6 +317,43 @@ public class Ventana1 extends javax.swing.JFrame {
     private void eliminarUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarUsuarioMouseExited
         eliminarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/basura1.png")));
     }//GEN-LAST:event_eliminarUsuarioMouseExited
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo,guardado_automatico);
+        System.out.println(miGrafo);
+        JFileChooser file=new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt");
+        file.setFileFilter(filter);
+        file.showOpenDialog(file);
+        File abre=file.getSelectedFile();
+        int result = file.getDialogType();
+        if (result == JFileChooser.APPROVE_OPTION) {
+        }else{
+             JOptionPane.showMessageDialog(null, "La carga de archivo se ha cancelado");
+        }
+            int option = JOptionPane.showOptionDialog(null, "¿Deseas guardar los datos actuales antes de cargar un nuevo archivo?",
+                    "Advertencia", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                    new Object[]{"Guardar", "Descartar", "Cancelar"}, "Guardar");
+            if (option == JOptionPane.YES_OPTION) {
+                try {
+                    miGrafo = extraerGrafo(guardado_automatico);
+                    guardarGrafo(miGrafo,abre);
+                    JOptionPane.showMessageDialog(null, "Archivo cargado exitosamente.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
+                }
+            }
+        
+        
+    }//GEN-LAST:event_guardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -305,6 +399,8 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton agregarUsuario1;
     private javax.swing.JLabel dialogo;
     private javax.swing.JButton eliminarUsuario;
+    private javax.swing.JButton guardar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

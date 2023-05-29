@@ -4,25 +4,34 @@
  * and open the template in the editor.
  */
 package interfa.Ventanas;
-import proyecto.Proyecto.*;
-import proyecto.Grafo.*;
-import proyecto.Adyacente.*;
-import proyecto.Arista.*;
-import proyecto.Lista.*;
-import proyecto.Nodo.*;
-import proyecto.Usuario.*;
+
+import static interfa.Ventanas.Ventana1.guardado_automatico;
+import java.io.File;
+import javax.swing.JOptionPane;
+import proyecto.Grafo;
+import proyecto.Proyecto;
+import static proyecto.Proyecto.encontrar;
+import static proyecto.Proyecto.extraerGrafo;
+import static proyecto.Proyecto.guardarGrafo;
+import static proyecto.Proyecto.miGrafo;
+import proyecto.Usuario;
+
+
 /**
  *
  * @author donat
  */
 public class Ventana2 extends javax.swing.JFrame {
-        
+        private static Grafo miGrafo;
+        public static File guardado_automatico = new File("src\\Archivos\\guardado_automatico.txt");
     /**
      * Creates new form Ventana2
      */
     public Ventana2() {
 //        this.setLocationRelativeTo(null);
+    miGrafo = extraerGrafo(guardado_automatico);
         initComponents();
+        
     }
 
     /**
@@ -44,6 +53,7 @@ public class Ventana2 extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         idcreado = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -103,13 +113,13 @@ public class Ventana2 extends javax.swing.JFrame {
                 nombretxtActionPerformed(evt);
             }
         });
-        getContentPane().add(nombretxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 150, -1));
+        getContentPane().add(nombretxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 150, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Nombre:");
         jLabel3.setFocusable(false);
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, 60, 20));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 60, 20));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -122,6 +132,10 @@ public class Ventana2 extends javax.swing.JFrame {
         idcreado.setFocusable(false);
         getContentPane().add(idcreado, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, 50, 20));
 
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario text.png"))); // NOI18N
+        jLabel5.setFocusable(false);
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, -1, -1));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/8bitfondo2.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -129,43 +143,26 @@ public class Ventana2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nombretxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombretxtActionPerformed
-        Math.random();
-        Math.random();
-        int[] esto = {863, 736, 453, 726};
-        int n=7;
-        while (n>0){
+        miGrafo = extraerGrafo(guardado_automatico);
+        JOptionPane.showMessageDialog(null, miGrafo);
         int id= (int) (Math.random() * (999 - 100) + 100);
-        for (int i = 0; i < esto.length; i++) {
-            if (id==esto[i]) {
-                n=+1;
-                
-            }else{
-                n=0;
-                idcreado.setText(String.valueOf(id));
-            }
+        while (encontrar(id)=="no encontrado"){
+        id= (int) (Math.random() * (999 - 100) + 100);
         }
-        }
-        
+        idcreado.setText(String.valueOf(id));
+                    
     }//GEN-LAST:event_nombretxtActionPerformed
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
+        miGrafo = extraerGrafo(guardado_automatico);
+        JOptionPane.showMessageDialog(null, miGrafo);
         nombretxt.setText("");
-        Math.random();
-        int[] esto = {863, 736, 453, 726};
-        int n=7;
-        while (n>0){
         int id= (int) (Math.random() * (999 - 100) + 100);
-        for (int i = 0; i < esto.length; i++) {
-            if (id==esto[i]) {
-                n=+1;
-                
-            }else{
-                n=0;
-                idcreado.setText(String.valueOf(id));
-            }
+        while (encontrar(id)=="no encontrado"){
+        id= (int) (Math.random() * (999 - 100) + 100);
+            System.out.println("siuuuu");
         }
-        
-        }
+        idcreado.setText(String.valueOf(id));
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void nombretxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nombretxtMouseClicked
@@ -174,15 +171,30 @@ public class Ventana2 extends javax.swing.JFrame {
     }//GEN-LAST:event_nombretxtMouseClicked
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-        //Aqui que compruebe que este bien el usuario
+        if (nombretxt.getText()=="") {
+        try{
+        Usuario nuevoU = new Usuario(Integer.parseInt(idcreado.getText()), nombretxt.getText());
+        JOptionPane.showMessageDialog(null, nuevoU.getId() + "\n" +nuevoU.getNickname());
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);
+        miGrafo.agregarUsuario(nuevoU);
+        guardarGrafo(miGrafo, guardado_automatico);
+        
+        miGrafo = extraerGrafo(guardado_automatico);    
+        JOptionPane.showMessageDialog(null, nuevoU);
         dispose();
             Ventana2_2 v2_2 = new Ventana2_2();
-            v2_2.Ventanatext("Añadir Amigo",2);
+            v2_2.Ventanatext("Añadir Amigo",Integer.parseInt(idcreado.getText()));
             v2_2.setVisible(true);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error, "+ e);
+        }
+        }
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void devolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_devolverActionPerformed
-
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);
         Ventana1 v1 = new Ventana1(true);
         dispose();
         v1.setVisible(true);
@@ -233,6 +245,7 @@ public class Ventana2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton limpiar;
     private javax.swing.JTextField nombretxt;

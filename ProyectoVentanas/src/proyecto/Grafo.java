@@ -6,6 +6,7 @@
 package proyecto;
 
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -50,8 +51,7 @@ public class Grafo {
     
     private int getIndex(int value) {
         
-        System.out.println(numV);
-        for(int i = 0; i< numV; i++){
+        for(int i = 1; i< numV; i++){
             if(valores[i].getId() == value) {
                 return i;
                     }
@@ -63,7 +63,6 @@ public class Grafo {
         Nodo<Adyacente> actual = adyacentes[i].getPfirst(); 
         while (actual != null) {
             if (actual.getElement().getDestino() == j)  {
-                System.out.println("si sirve");
                 return true;
             } 
             actual = actual.getPnext();
@@ -74,7 +73,6 @@ public class Grafo {
     public void insertarArista(int i, int j, int peso){
         if (!existeArista(i, j)) { 
             adyacentes[i].insertarInicio(new Adyacente(j, peso));
-//            adyacentes[j].insertarInicio(new Adyacente(i, peso));
             numA++; 
         }
         
@@ -159,6 +157,9 @@ public class Grafo {
     public String toString() {
         String res = "";  
         for (int  i = 0; i < numVertices(); i++) {
+            if (valores[i]==null){
+                
+            }else{
             res += "Vertice: " + (i+1) + " (UserID = " + valores[i].getId() + ", Nickname = " + valores[i].getNickname() +"),";
             System.out.println(adyacentesDe(i)+ "pasos: "+ i);
             
@@ -167,26 +168,30 @@ public class Grafo {
             else { res += " con Adyacentes "; } 
             while (actual != null) {res += actual.getElement().toString() + " "; actual = actual.getPnext();}
             res += "\n";  
+            }
         }        
         return res;      
     }
     
     public void agregarUsuario(Usuario usuario) {
-        int id = usuario.getId();
         
+        int id = usuario.getId();
         if (getIndex(id) != -1) {
             System.out.println("El usuario con ID " + id + " ya existe en el grafo.");
             return;
         }
         numV++;
 	int newIndex = 0;
+        System.out.println(adyacentes.length+ " cantidad adyacentes");
 	for(; newIndex < adyacentes.length; newIndex++){
 		if(adyacentes[newIndex] == null) break;
 	}
 	if(newIndex == adyacentes.length) {duplicarArray();}
         
            valores[newIndex] = usuario; 
+        
            adyacentes[0] = new Lista<Adyacente>();
+           System.out.println("Sirvio agregar");
             
         
         
@@ -202,9 +207,17 @@ public class Grafo {
 	for(int i = 0; i<valores.length;i++)nuevoArrayValores[i] = valores[i];
 	valores = nuevoArrayValores;
     }
+    public String buscar(int id) {
+        int index = getIndex(id); 
+        if (index == -1) {
+            System.out.println("No se encontró el usuario con ID " + id + " en el grafo.");
+            return "no encontrado";
+        } 
+        String encontrado = valores[index].getNickname();
+        return encontrado;
+    }
     
     public void eliminarUsuario(int id) {
-
         int index = getIndex(id);    
         if (index == -1) {
             System.out.println("No se encontró el usuario con ID " + id + " en el grafo.");
@@ -219,10 +232,10 @@ public class Grafo {
             if (adyacentes[i] != null) {
                 Lista<Adyacente> listaAdyacentes = adyacentes[i];
                 Nodo<Adyacente> nodoAdyacente = listaAdyacentes.getPfirst();
-                
                 while (nodoAdyacente != null) {
                     if (nodoAdyacente.getElement().getDestino() == index) {
                         listaAdyacentes.eliminar(nodoAdyacente);
+                        
                         break;
                     }
                     nodoAdyacente = nodoAdyacente.getPnext();
@@ -231,6 +244,7 @@ public class Grafo {
         }
          
         numV--;
+        
     }
     
     public Arista[] getAristas(){

@@ -4,21 +4,23 @@
  * and open the template in the editor.
  */
 package interfa.Ventanas;
-import proyecto.Proyecto.*;
-import proyecto.Grafo.*;
-import proyecto.Adyacente.*;
-import proyecto.Arista.*;
-import proyecto.Lista.*;
-import proyecto.Nodo.*;
-import proyecto.Usuario.*;
+import java.io.File;
+import javax.swing.JOptionPane;
+import proyecto.Grafo;
+import static proyecto.Proyecto.encontrar;
+import static proyecto.Proyecto.extraerGrafo;
+import static proyecto.Proyecto.guardarGrafo;
+import static proyecto.Proyecto.miGrafo;
+import proyecto.Usuario;
 
 /**
  *
  * @author donat
  */
 public class Ventana2_2 extends javax.swing.JFrame {
-
+        private static Grafo miGrafo;
         public static int pestana;
+        public static File guardado_automatico = new File("src\\Archivos\\guardado_automatico.txt");
     
     public Ventana2_2() {
         
@@ -44,13 +46,13 @@ public class Ventana2_2 extends javax.swing.JFrame {
         dialogo = new javax.swing.JLabel();
         limpiar = new javax.swing.JButton();
         aceptar = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
         idtextoo = new javax.swing.JLabel();
         nombreamigo = new javax.swing.JLabel();
-        idtext = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         devolver = new javax.swing.JButton();
         hacer = new javax.swing.JLabel();
+        idtext = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -88,12 +90,6 @@ public class Ventana2_2 extends javax.swing.JFrame {
         });
         getContentPane().add(aceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 280, 30, 30));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Nombre:");
-        jLabel3.setFocusable(false);
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, 60, 20));
-
         idtextoo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         idtextoo.setForeground(new java.awt.Color(0, 0, 0));
         idtextoo.setText("ID Usuario:");
@@ -103,13 +99,7 @@ public class Ventana2_2 extends javax.swing.JFrame {
         nombreamigo.setForeground(new java.awt.Color(0, 0, 0));
         nombreamigo.setText(".");
         nombreamigo.setFocusable(false);
-        getContentPane().add(nombreamigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 140, 20));
-
-        idtext.setBackground(new java.awt.Color(255, 255, 255));
-        idtext.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        idtext.setForeground(new java.awt.Color(0, 0, 0));
-        idtext.setText("000");
-        getContentPane().add(idtext, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
+        getContentPane().add(nombreamigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, 140, 20));
 
         jButton1.setBackground(new java.awt.Color(51, 204, 0));
         jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 12)); // NOI18N
@@ -139,7 +129,19 @@ public class Ventana2_2 extends javax.swing.JFrame {
         hacer.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         hacer.setForeground(new java.awt.Color(0, 0, 0));
         hacer.setText("aqui");
-        getContentPane().add(hacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, -1, -1));
+        getContentPane().add(hacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 30, -1, 30));
+
+        idtext.setBackground(new java.awt.Color(255, 255, 255));
+        idtext.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        idtext.setForeground(new java.awt.Color(0, 0, 0));
+        idtext.setText("000");
+        getContentPane().add(idtext, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Nombre:");
+        jLabel4.setFocusable(false);
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 60, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/8bitfondo2.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -153,17 +155,33 @@ public class Ventana2_2 extends javax.swing.JFrame {
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-        //Aqui que compruebe que este bien el usuario
+
+        miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);
+        try{
+            if (pestana==1) {
+                JOptionPane.showMessageDialog(null, pestana);
+                miGrafo.eliminarUsuario(Integer.parseInt(idtext.getText()));
+                guardarGrafo(miGrafo, guardado_automatico);
+            }else{
+                Ventana2 v2 = new Ventana2();
+                int peso = Integer.parseInt(JOptionPane.showInputDialog("Cuantos años lleva su amistad?:\n"));
+                miGrafo.insertarAristaValor(pestana, Integer.parseInt(idtext.getText()), peso);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error, introduzca bien los datos");
+                
+                }  
+        
 
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        nombreamigo.setText("agrega el codigo");
-        if (pestana==1) {
-            
-        } else if (pestana==2) {
-            
-        }
+        nombreamigo.setText(encontrar(Integer.parseInt(idtext.getText())));
+        
+        
+        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void devolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_devolverActionPerformed
@@ -172,12 +190,14 @@ public class Ventana2_2 extends javax.swing.JFrame {
                 dispose();
             Ventana1 v1 = new Ventana1(true);
             v1.setVisible(true);
-        } else if (pestana==2) {
+        } else if (pestana<2) {
             dispose();
             Ventana2 v2 = new Ventana2();
             v2.setVisible(true);
         }
-            
+            guardarGrafo(miGrafo, guardado_automatico);
+        
+        
     }//GEN-LAST:event_devolverActionPerformed
 
     /**
@@ -227,7 +247,7 @@ public class Ventana2_2 extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton limpiar;
     private javax.swing.JLabel nombreamigo;

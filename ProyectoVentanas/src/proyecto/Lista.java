@@ -5,6 +5,8 @@
  */
 package proyecto;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Antonio
@@ -65,7 +67,7 @@ public class Lista<E>
         Nodo<E> temp = pfirst;
         int cuenta = 0;
         if (this.isEmpty()) {
-            System.out.println("esta vacia imbecil");
+            System.out.println("esta vacia");
         }
         while (temp != null){
             cuenta++;
@@ -79,15 +81,17 @@ public class Lista<E>
     public Nodo getPfirst() {
         return pfirst;
     }
+
     
     public void eliminar(Nodo<E> nodo){
-        size--;
+        
         Nodo<E> actual = pfirst;
         if(size == 1) {pfirst = plast = null; return;}
-        if(nodo.equals(actual)) {pfirst = plast.getPnext(); return;}
+        if(nodo.equals(actual)) {pfirst = pfirst.getPnext(); return;}
         while(!actual.getPnext().equals(nodo)) actual = actual.getPnext();
         if(nodo.equals(plast)) plast = actual; 
         actual.setPnext(nodo.getPnext());
+        size--;
     }
     
    
