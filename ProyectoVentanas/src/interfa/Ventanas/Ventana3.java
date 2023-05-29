@@ -199,12 +199,15 @@ public class Ventana3 extends javax.swing.JFrame {
     }//GEN-LAST:event_buscaruserActionPerformed
 
     private void crearamistadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearamistadActionPerformed
-        guardarGrafo(miGrafo, guardado_automatico);
         miGrafo = extraerGrafo(guardado_automatico);
+        guardarGrafo(miGrafo, guardado_automatico);
         try{            
-        miGrafo.insertarAristaValor(Integer.parseInt(idusuario.getText()), Integer.parseInt(idusuario.getText()), Integer.parseInt(añosamistad.getText()));
+        miGrafo.insertarAristaValor(Integer.parseInt(idusuario.getText()), Integer.parseInt(idamigo.getText()), Integer.parseInt(añosamistad.getText()));
+            System.out.println("paso");
         guardarGrafo(miGrafo, guardado_automatico);
+        System.out.println("paso2");
         miGrafo = extraerGrafo(guardado_automatico);
+        System.out.println("paso3");
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Error, introduzca datos validos");
         }

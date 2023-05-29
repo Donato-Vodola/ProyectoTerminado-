@@ -71,7 +71,7 @@ public class Grafo {
     }
     
     public void insertarArista(int i, int j, int peso){
-        if (!existeArista(i, j)) { 
+        if (!existeArista(i, j) && !existeArista(j, i)) { 
             adyacentes[i].insertarInicio(new Adyacente(j, peso));
             numA++; 
         }
